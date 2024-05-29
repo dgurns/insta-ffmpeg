@@ -32,4 +32,4 @@ Go ahead and clone this repo to try it yourself!
 
 ## Example Output
 
-![](https://github.com/dgurns/insta-ffmpeg/assets/1173791/46004dd5-03e9-4d20-aa33-e5c03f08d33b)
+<video src="https://github.com/dgurns/insta-ffmpeg/assets/1173791/46004dd5-03e9-4d20-aa33-e5c03f08d33b" style="max-width:300px;"></video>
