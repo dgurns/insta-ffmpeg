@@ -25,6 +25,11 @@ if [ ! -f "$input_mp3" ]; then
     exit 1
 fi
 
-# Run ffmpeg command to encode the video
-ffmpeg -y -i "${input_mp3}" -loop 1 -i "${input_png}" -filter_complex "[0:a]showwaves=s=828x1792:mode=line:rate=25:colors=white,format=yuva420p[waves];[waves]gblur=sigma=5[smoothedwaves];[smoothedwaves]colorchannelmixer=aa=0.4[transparentwaves];[1:v][transparentwaves]overlay[outv]" -map "[outv]" -map 0:a -pix_fmt yuv420p -c:v libx264 -c:a aac -shortest "${input_name}.mp4"
+# Resize the input image to ensure width is divisible by 2
+ffmpeg -i "${input_png}" -vf scale=1180:2556 "${input_name}_resized.png"
 
+# Run ffmpeg command to encode the video
+ffmpeg -y -i "${input_mp3}" -loop 1 -i "${input_name}_resized.png" -filter_complex "[0:a]showwaves=s=1180x2556:mode=line:rate=25:colors=white,format=yuva420p[waves];[waves]gblur=sigma=5[smoothedwaves];[smoothedwaves]colorchannelmixer=aa=0.4[transparentwaves];[1:v][transparentwaves]overlay[outv]" -map "[outv]" -map 0:a -pix_fmt yuv420p -c:v libx264 -c:a aac -shortest "${input_name}.mp4"
+
+# Clean up temporary file
+rm "${input_name}_resized.png"
